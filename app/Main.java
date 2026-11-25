@@ -9,6 +9,7 @@ import model.Client;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 
+
 public class Main {
 
     public static void main(String[] args) throws SQLException {
@@ -69,5 +70,46 @@ public class Main {
 
         // Test avec un client supposé inexistant
         System.out.println(clientDAO.findById(99999));
-    }
+
+        Client client2 = clientDAO.findById(1);
+
+        if (client2 != null) {
+
+            client2.setFirst_name("Pierre");
+
+            clientDAO.update(client2);
+
+            Client updatedClient = clientDAO.findById(1);
+
+            System.out.println(updatedClient.getFirst_name());
+        }
+        // CREATE
+        Client newClient = new Client(
+            0,
+            "Marie",
+            "Martin",
+            "test@example.fr"
+        );
+
+        int id = clientDAO.create(newClient);
+        System.out.println("CREATE : " + id);
+
+        // READ
+        Client client3 = clientDAO.findById(id);
+        System.out.println("READ : " + client3.getFirst_name());
+
+        // UPDATE
+        client3.setFirst_name("Sophie");
+        clientDAO.update(client3);
+
+        Client updatedClient = clientDAO.findById(id);
+        System.out.println("UPDATE : " + updatedClient.getFirst_name());
+
+        // DELETE
+        clientDAO.delete(id);
+        System.out.println("DELETE : " + (clientDAO.findById(id) == null));
+
+            }
+
+    
 }
