@@ -1,6 +1,7 @@
 package app;
 
 import connection.DatabaseConnection;
+import dao.ClientDAO;
 import factory.AccountFactory;
 import model.Account;
 import model.Client;
@@ -48,5 +49,25 @@ public class Main {
 
         System.out.println(account1.getClass().getSimpleName());
         System.out.println(account2.getClass().getSimpleName());
+
+        ClientDAO clientDAO = new ClientDAO();
+
+        // Test de findAll()
+        for (Client client1 : clientDAO.findAll()) {
+            System.out.println(client1.getFirst_name()
+                + " " + client1.getLast_name());
+        }
+
+        // Test avec un client existant
+        Client existingClient = clientDAO.findById(1);
+
+        if (existingClient != null) {
+            System.out.println(existingClient.getFirst_name());
+        } else {
+            System.out.println("Client not found");
+        }
+
+        // Test avec un client supposé inexistant
+        System.out.println(clientDAO.findById(99999));
     }
 }
