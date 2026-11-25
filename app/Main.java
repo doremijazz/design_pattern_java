@@ -3,12 +3,16 @@ package app;
 import connection.DatabaseConnection;
 import dao.AccountDAO;
 import dao.ClientDAO;
+import dao.OperationDAO;
 import factory.AccountFactory;
 import model.Account;
 import model.Client;
+import model.Operation;
+import model.OperationType;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -153,7 +157,37 @@ public class Main {
         accountDAO.delete(accountId);
         System.out.println("DELETE : " + (accountDAO.findById(accountId) == null));     
         
+        OperationDAO operationDAO = new OperationDAO();
 
+        Account account = accountDAO.findById(1);
+
+        if (account != null) {
+
+            Operation operation = new Operation(
+                0,
+                new BigDecimal("100.00"),
+                LocalDateTime.now(),
+                OperationType.DEPOSIT,
+                account
+            );
+
+            int id1 = operationDAO.create(operation);
+
+            System.out.println("CREATE : " + id1);
+
+            Operation savedOperation = operationDAO.findById(id1);
+
+            System.out.println("AMOUNT : " + savedOperation.getAmount());
+            System.out.println("TYPE : " + savedOperation.getType());
+
+            for (Operation op : operationDAO.findByAccountId(1)) {
+                System.out.println(
+                    op.getDate() + " : "
+                    + op.getType() + " : "
+                    + op.getAmount() + " €"
+                );
+            }
+        }
     }
 
     
