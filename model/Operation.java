@@ -19,7 +19,7 @@ public class Operation {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -27,7 +27,7 @@ public class Operation {
     }
 
     public BigDecimal getAmount() {
-        return amount;
+        return this.amount;
     }
 
     public void setAmount(BigDecimal amount) {
@@ -35,7 +35,7 @@ public class Operation {
     }
 
     public LocalDateTime getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(LocalDateTime date) {
@@ -43,15 +43,14 @@ public class Operation {
     }
 
     public OperationType getType() {
-        return type;
+        return this.type;
     }
-
     public void setType(OperationType type) {
         this.type = type;
     }
 
     public Account getAccount() {
-        return account;
+        return this.account;
     }
 
     public void setAccount(Account account) {
@@ -66,7 +65,4 @@ public class Operation {
 
 }
 
-enum OperationType {
-	DEPOSIT,
-	WITHDRAWAL
-}
+
