@@ -1,6 +1,7 @@
 package app;
 
 import connection.DatabaseConnection;
+import dao.AccountDAO;
 import dao.ClientDAO;
 import factory.AccountFactory;
 import model.Account;
@@ -8,6 +9,7 @@ import model.Client;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class Main {
@@ -83,6 +85,7 @@ public class Main {
 
             System.out.println(updatedClient.getFirst_name());
         }
+        // Test de CRUD DAO pour Client
         // CREATE
         Client newClient = new Client(
             0,
@@ -93,7 +96,6 @@ public class Main {
 
         int id = clientDAO.create(newClient);
         System.out.println("CREATE : " + id);
-
         // READ
         Client client3 = clientDAO.findById(id);
         System.out.println("READ : " + client3.getFirst_name());
@@ -109,7 +111,50 @@ public class Main {
         clientDAO.delete(id);
         System.out.println("DELETE : " + (clientDAO.findById(id) == null));
 
-            }
+        AccountDAO accountDAO = new AccountDAO();
+
+        for (Account account : accountDAO.findAll()) {
+
+            System.out.println(
+                account.getClass().getSimpleName()
+                + " : " + account.getBalance() + " €"
+            );
+        }
+
+        // Test de findByClientId()
+        int clientId = 1;
+        List<Account> accounts = accountDAO.findByClientId(clientId);
+        for (Account account : accounts) {
+            System.out.println(
+                account.getClass().getSimpleName()
+                + " : " + account.getBalance() + " €"
+            );
+        }
+
+        // Test de CRUD DAO pour Account
+        // CREATE
+        Account newAccount = AccountFactory.createAccount(
+            "CURRENT",
+            0,
+            "000003",
+            new BigDecimal("500.00"),
+            client,
+            null
+        );
+        int accountId = accountDAO.create(newAccount);
+        System.out.println("CREATE : " + accountId);
+        // READ
+        Account account3 = accountDAO.findById(accountId);
+        System.out.println("READ : " + account3.getBalance() + " €");
+        // UPDATE
+        account3.setBalance(new BigDecimal("750.00"));
+        accountDAO.update(account3);
+        // DELETE
+        accountDAO.delete(accountId);
+        System.out.println("DELETE : " + (accountDAO.findById(accountId) == null));     
+        
+
+    }
 
     
 }
